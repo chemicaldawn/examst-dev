@@ -10,7 +10,11 @@
 
 #let exit-question() = {
   state.questions.step()
-  state.question-number.update(old => (old.at(0) + 1,))
+  state.question-number.update(old => {
+    old.pop()
+    old.push(old.pop() + 1)
+    return old
+  })
 
   context {
     let old-question-points = state.question-points.get()
@@ -23,44 +27,48 @@
   state.question-points.update(0)
 }
 
-#let conditional-pagebreak() = context {
-  if(state.questions.get() != state.questions.final()) {
-    pagebreak()
-  }
-}
-
-#let question(
-  title,
+#let _question(
+  title: none,
   points: auto,
   body
 ) = [
-  #grid(
-    columns: (1fr, auto),
-    heading(
-      numbering: none,
-      context [
-        #numbering(
-          config.question-numbering.get(), 
-          ..state.question-number.get()
-        )
-        #title
+  #grid(columns: (auto, 1fr), gutter: 4pt, inset: 0pt,
+    par()[
+      #context numbering(
+        config.question-numbering.get(), 
+        ..state.question-number.get()
+      )
+    ],
+    [
+      #metadata("") <question-begin>
+      #enter-question()
+  
+      #if title != none [
+        #title 
       ]
-    ),
-    context heading(
-      numbering: none
-    )[
-      #let next-end = query(selector(<question-end>).after(here())).first().location()
-      (#state.question-points.at(next-end) #config.points-label.get())
+      #if points != auto [
+        (#points points)
+      ]
+      #body 
+
+      #metadata("") <question-end>
+      #exit-question()
     ]
   )
-
-  #enter-question()
-  #metadata("") <question-begin>
-  
-  #body
-
-  #metadata("") <question-end>
-  #exit-question()
-
-  #conditional-pagebreak()
 ]
+
+#let question(
+  title: none,
+  points: auto,
+  body
+) = {
+  _question(title: title, points: points, body)
+}
+
+#let part(
+  title: none,
+  points: auto,
+  body
+) = {
+  _question(title: title, points: points, body)
+}
