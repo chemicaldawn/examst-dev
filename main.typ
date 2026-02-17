@@ -1,24 +1,15 @@
 #import "examst.typ": *
+#import "src/state/state.typ"
 
-#question(title: "Air Question", points: 10)[
-  Why is there air?
+#show: exam.with(
+  point-counters: ("default", "bonus"),
+  point-counter-labels: ("default": "points", "bonus" : "bonus points")
+)
+
+#question(points: 10)[
+  Question 1
 ]
 
-#question(show-points: true)[
-  What if there were no air?
-  #part(points: 5)[
-    Describe the effect on the balloon industry.
-  ]
-  #part(points: 5)[
-    Describe the effect on the aircraft industry.
-  ]
-]
-
-#question(points: 20)[
-  #part()[
-    Define the universe. Give three examples.
-  ]
-  #part()[
-    If the universe were to end, how would you know?
-  ]
+#question(points: 5)[
+  Question 2
 ]

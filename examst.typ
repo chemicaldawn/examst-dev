@@ -1,6 +1,5 @@
 #import "src/document/exam.typ": *
 
-#import "src/components/part.typ": *
 #import "src/components/question.typ": *
 #import "src/components/gradetable.typ": *
 
@@ -9,7 +8,4 @@
 
 #show: exam.with(
   question-numbering: "Q1a", 
-  points-label: "points", 
-  show-points: true
 )
-
