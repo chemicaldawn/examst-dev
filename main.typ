@@ -4,7 +4,7 @@
   Why is there air?
 ]
 
-#question()[
+#question(show-points: true)[
   What if there were no air?
   #part(points: 5)[
     Describe the effect on the balloon industry.
