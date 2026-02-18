@@ -1,21 +1,25 @@
 {
   description = "Nix flake for editing content";
 
-  inputs.nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+  inputs = {
+	  nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+	  flake-utils.url = "github:numtide/flake-utils";
+  };
 
-  outputs = { self, nixpkgs}:
-    let
-      system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
-    in {
-      devShells.x86_64-linux.default = pkgs.mkShell {
-        packages = with pkgs; [
-          typst
-          tinymist
-        ];
-        shellHook = ''
-          exec fish
-        '';
-      };
-    };
+  outputs = { self, nixpkgs, flake-utils, ... }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let pkgs = import nixpkgs { inherit system; };
+      in {
+        devShells.default = pkgs.mkShell {
+          packages = with pkgs; [
+            typst
+			typstyle
+            tinymist
+          ];
+          shellHook = ''
+            exec fish
+          '';
+        };
+      }
+  );
 }
